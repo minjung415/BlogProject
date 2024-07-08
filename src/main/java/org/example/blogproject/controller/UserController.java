@@ -26,14 +26,17 @@ public class UserController {
     public String main(){
         return "main";
     }
-    @GetMapping("/login")
-    public String loginForm(Model model){
+    @GetMapping("/loginform")
+    public String loginForm(){
+        /*
         String username = null;
         String password = null;
         model.addAttribute("username", username);
         model.addAttribute("password", password);
+        */
         return "login";
     }
+    /*
     @PostMapping("/login")
     public String login(@ModelAttribute String username,
                         @ModelAttribute String password,
@@ -45,15 +48,16 @@ public class UserController {
             else{
                 redirectAttributes.addAttribute("message", "Password가 옳지 않습니다.");
                 redirectAttributes.addAttribute("username", username);
-                return "redirect:/login";
+                return "redirect:/loginform";
             }
         }
         else {
             redirectAttributes.addAttribute("message", "존재하지 않는 ID입니다.");
-            return "redirect:/login";
+            return "redirect:/loginform";
         }
     }
-    @GetMapping("/userreg")
+    */
+    @GetMapping("/userregform")
     public String userRegForm(){
         //model.addAttribute("user", new User());
         return "userreg";
@@ -61,12 +65,12 @@ public class UserController {
     @PostMapping("/userreg")
     public String userReg(@ModelAttribute("user") User user, BindingResult result){
         if(result.hasErrors()){
-            return "userreg";
+            return "/minlog/userregform";
         }
         User byUsername = userService.getUser(user.getUsername());
         if(byUsername != null){
             result.rejectValue("username",null,"이미 사용중인 아이디입니다.");
-            return "userreg";
+            return "/minlog/userregform";
         }
         userService.createUser(user);
         /*
