@@ -39,7 +39,7 @@ public class SecurityConfig {
                 )
                 .formLogin(form -> form
                         .loginPage("/minlog/loginform")
-                        .loginProcessingUrl("/login")
+                        .loginProcessingUrl("/minlog/login")
                         .defaultSuccessUrl("/minlog")
                         .permitAll()
                 )
