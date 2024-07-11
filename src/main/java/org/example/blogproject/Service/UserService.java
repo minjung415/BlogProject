@@ -27,7 +27,7 @@ public class UserService {
             throw new IllegalArgumentException("Username already exists.");
         }
         */
-        Role roleUser = roleRepository.findByName("ROLE_USER");
+        Role roleUser = roleRepository.findByName("USER");
         user.setRoles(Collections.singleton(roleUser));
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userRepository.save(user);

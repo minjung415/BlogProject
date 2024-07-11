@@ -34,7 +34,7 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
         http
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/minlog").permitAll()
+                        .requestMatchers("/minlog", "/minlog/userregform", "minlog/userreg").permitAll()
                         .anyRequest()
                         .authenticated()
                 )
@@ -48,7 +48,8 @@ public class SecurityConfig {
                         .logoutUrl("/logout")
                         .logoutSuccessUrl("/minlog")
                 )
-                .userDetailsService(customUserDetailsService);
+                .userDetailsService(customUserDetailsService)
+                .csrf(csrf -> csrf.disable());
 
         return http.build();
     }
