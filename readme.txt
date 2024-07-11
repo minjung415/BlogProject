@@ -4,12 +4,13 @@
 -회원 등록(O)
 -회원가입 후 이동(O)
 
-2.로그인/로그아웃(40%)
+2.로그인/로그아웃(30%)
 -로그인 폼(O)
 -로그인 기능
 -로그인 성공
 -로그인 실패
--Spring Security_JWT
+-spring security_FormLogin
+-Spring Security_JWT(포기)
 -로그아웃
 
 3.메인 홈(20%)
