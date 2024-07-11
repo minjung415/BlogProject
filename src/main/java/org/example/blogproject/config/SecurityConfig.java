@@ -46,7 +46,7 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
         http
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/minlog","/minlog/userregform", "/minlog/userreg", "/minlog/login", "/minlog/loginform").permitAll()
+                        .requestMatchers("/minlog","/userregform", "/userreg", "/", "/login", "/loginform", "/refreshToken").permitAll()
                         .anyRequest()
                         .authenticated()
                 )

@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -38,5 +39,9 @@ public class UserService {
     @Transactional
     public User getUser(String username){
         return userRepository.findByUsername(username);
+    }
+    @Transactional(readOnly = true)
+    public Optional<User> getUserById(Long id){
+        return userRepository.findById(id);
     }
 }

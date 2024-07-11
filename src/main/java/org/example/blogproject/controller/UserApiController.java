@@ -1,9 +1,12 @@
 package org.example.blogproject.controller;
 
+import io.jsonwebtoken.Claims;
 import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.example.blogproject.Service.RefreshTokenService;
 import org.example.blogproject.Service.UserService;
 import org.example.blogproject.domain.RefreshToken;
@@ -18,6 +21,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -25,6 +29,8 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/api")
+@Slf4j
 public class UserApiController {
     private final UserService userService;
     private final PasswordEncoder passwordEncoder;
@@ -34,9 +40,11 @@ public class UserApiController {
     @PostMapping("/login")
     public ResponseEntity login(@RequestBody @Valid UserLoginDto userLoginDto,
                                 BindingResult bindingResult, HttpServletResponse response){
+        log.info("username ::::: " + userLoginDto.getUsername());
         if(bindingResult.hasErrors()){
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
+        log.info("username ::::: " + userLoginDto.getUsername());
         //존재하는 사용자인지 확인
         User user = userService.getUser(userLoginDto.getUsername());
         if(!passwordEncoder.matches(userLoginDto.getPassword(), user.getPassword())){
@@ -67,12 +75,12 @@ public class UserApiController {
 
         Cookie accessTokenCookie = new Cookie("accessToken",accessToken);
         accessTokenCookie.setHttpOnly(true);  //보안 (쿠키값을 자바스크립트같은곳에서는 접근할수 없어요.)
-        accessTokenCookie.setPath("/");
+        accessTokenCookie.setPath("/minlog");
         accessTokenCookie.setMaxAge(Math.toIntExact(JwtTokenizer.ACCESS_TOKEN_EXPIRE_COUNT/1000)); //30분 쿠키의 유지시간 단위는 초 ,  JWT의 시간단위는 밀리세컨드
 
         Cookie refreshTokenCookie = new Cookie("refreshToken", refreshToken);
         refreshTokenCookie.setHttpOnly(true);
-        refreshTokenCookie.setPath("/");
+        refreshTokenCookie.setPath("/minlog");
         refreshTokenCookie.setMaxAge(Math.toIntExact(JwtTokenizer.REFRESH_TOKEN_EXPIRE_COUNT/1000)); //7일
 
         response.addCookie(accessTokenCookie);
@@ -80,5 +88,55 @@ public class UserApiController {
 
         return new ResponseEntity(loginResponseDto, HttpStatus.OK);
     }
+    @PostMapping("/refreshToken")
+    public ResponseEntity refreshToken(HttpServletRequest request, HttpServletResponse response){
+        //할일!!
+        //1. 쿠키로부터 리프레시토큰을 얻어온다.
+        String refreshToken = null;
+        Cookie[] cookies = request.getCookies();
+        if(cookies != null){
+            for(Cookie cookie : cookies){
+                if("refreshToken".equals(cookie.getName())){
+                    refreshToken = cookie.getValue();
+                    break;
+                }
+            }
+        }
+        //2-1. 없다.  (오류로  응담.
+        if(refreshToken == null){
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
+        //2-2. 있을때.
+        //3. 토큰으로부터 정보를얻어와요.
+        Claims claims = jwtTokenizer.parseRefreshToken(refreshToken);
+        Long userId = Long.valueOf ((Integer)claims.get("userId"));
 
+        User user = userService.getUserById(userId).orElseThrow(() -> new IllegalArgumentException("사용자를 찾지 못했습니다."));
+
+        //4. accessToken 생성
+        List roles = (List)claims.get("roles");
+
+
+        String accessToken = jwtTokenizer.createAccessToken(userId, user.getEmail(),
+                user.getName(), user.getUsername(), roles);
+
+        //5. 쿠키 생성 response로 보내고.
+        Cookie accessTokenCookie = new Cookie("accessToken", accessToken);
+        accessTokenCookie.setHttpOnly(true);
+        accessTokenCookie.setPath("/");
+        accessTokenCookie.setMaxAge(Math.toIntExact( JwtTokenizer.ACCESS_TOKEN_EXPIRE_COUNT / 1000));
+
+        response.addCookie(accessTokenCookie);
+
+        // 6. 적절한 응답결과(ResponseEntity)를 생성해서 응답.
+        UserLoginResponseDto responseDto = UserLoginResponseDto.builder()
+                .accessToken(accessToken)
+                .refreshToken(refreshToken)
+                .name(user.getName())
+                .userId(user.getId())
+                .build();
+
+
+        return new ResponseEntity(responseDto, HttpStatus.OK);
+    }
 }
