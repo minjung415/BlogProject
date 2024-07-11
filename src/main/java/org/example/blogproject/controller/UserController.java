@@ -17,12 +17,12 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.time.LocalDateTime;
 
 @Controller
-//@RequestMapping("/minlog")
+@RequestMapping("/minlog")
 @RequiredArgsConstructor
 public class UserController {
     private final UserService userService;
 
-    @GetMapping("/minlog")
+    @GetMapping
     public String main(){
         return "main";
     }
@@ -65,12 +65,12 @@ public class UserController {
     @PostMapping("/userreg")
     public String userReg(@ModelAttribute("user") User user, BindingResult result){
         if(result.hasErrors()){
-            return "/userregform";
+            return "/minlog/userregform";
         }
         User byUsername = userService.getUser(user.getUsername());
         if(byUsername != null){
             result.rejectValue("username",null,"이미 사용중인 아이디입니다.");
-            return "/userregform";
+            return "/minlog/userregform";
         }
         userService.createUser(user);
         /*
