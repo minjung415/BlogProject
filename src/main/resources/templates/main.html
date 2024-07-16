@@ -12,14 +12,37 @@
             <h1 class="logo"><a th:href="@{/minlog}">Minlog</a></h1>
             <nav class="nav">
                 <div sec:authorize="isAnonymous()">
-                <a th:href="@{/minlog/loginform}" class="nav-link">로그인</a>
+                    <a th:href="@{/minlog/loginform}" class="nav-link">로그인</a>
                 </div>
                 <div sec:authorize="isAuthenticated()">
-                <a href="/logout" class="nav-link">로그아웃</a>
+                    <a href="/minlog/postform" class="nav-link">글 쓰기</a>
+                    <a href="/logout" class="nav-link">로그아웃</a>
                 </div>
             </nav>
         </div>
     </header>
+</div>
+<div>
+    <table th:if="${!posts.isEmpty()}">
+        <thead>
+        <tr>
+            <th>UserName</th>
+            <th>Title</th>
+            <th>Created At</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="post : ${posts}">
+            <td>
+                <a th:href="@{/minlog/{username}(username=${post.getUser().getUsername()})}" th:text="${post.getUser().username}"></a>
+            </td>
+            <td>
+                <a th:href="@{/minlog/viewpost(id=${post.id})}" th:text="${post.title}"></a>
+            </td>
+            <td th:text="${post.createdAt.format(dateformatter)}"></td>
+        </tr>
+        </tbody>
+    </table>
 </div>
 </body>
 </html>

@@ -22,10 +22,10 @@ import java.time.LocalDateTime;
 public class UserController {
     private final UserService userService;
 
-    @GetMapping
-    public String main(){
-        return "main";
-    }
+//    @GetMapping
+//    public String main(){
+//        return "main";
+//    }
     @GetMapping("/loginform")
     public String loginForm(){
         /*
