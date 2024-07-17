@@ -33,11 +33,6 @@ public class MainController {
 
         return "page";
     }
-    @GetMapping("/viewpost")
-    public String viewpost(@RequestParam(name = "id") Long id){
-
-        return "viewpost";
-    }
     @GetMapping("/mypage")
     public String mypage(){
 
