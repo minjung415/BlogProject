@@ -28,19 +28,26 @@ body {
 }
 
 .post-container {
-    margin-top: 20px;
+    margin-top: 30px;
+}
+
+div h2 {
+    font-size: 30px;
+    margin-left: 10px;
 }
 
 .post-meta {
     font-size: 0.9rem;
     color: #777;
     margin-bottom: 20px;
+    margin-left: 10px;
 }
 
 .post-content {
     font-size: 1.1rem;
     line-height: 1.6;
-    margin-bottom: 40px;
+    margin-bottom: 70px;
+    margin-left: 15px;
 }
 
 .comments-section {
@@ -54,6 +61,7 @@ body {
 
 .comment-author {
     font-weight: bold;
+    margin-left: 10px;
 }
 
 .comment-date {
@@ -64,6 +72,7 @@ body {
 
 .comment-content {
     margin-top: 5px;
+    margin-left: 10px;
 }
 
 .comment-form {

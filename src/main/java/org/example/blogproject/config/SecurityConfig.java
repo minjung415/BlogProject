@@ -34,7 +34,7 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
         http
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/minlog", "/minlog/userregform", "minlog/userreg", "/minlog/viewpost/**").permitAll()
+                        .requestMatchers("/minlog", "/minlog/userregform", "minlog/userreg", "/minlog/viewpost/**", "/minlog/profile/**").permitAll()
                         .anyRequest()
                         .authenticated()
                 )

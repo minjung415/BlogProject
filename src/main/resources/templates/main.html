@@ -16,13 +16,14 @@
                 </div>
                 <div sec:authorize="isAuthenticated()">
                     <a href="/minlog/postform" class="nav-link">글 쓰기</a>
+                    <a href="/minlog/mypage" class="nav-link">마이페이지</a>
                     <a href="/logout" class="nav-link">로그아웃</a>
                 </div>
             </nav>
         </div>
     </header>
     <div class="post-list-container">
-        <h2>게시글 목록</h2>
+        <h2>Post List</h2>
         <div class="post-list" th:if="${!posts.isEmpty()}">
             <div class="post-item" th:each="post : ${posts}">
                 <div class="post-title">
@@ -31,7 +32,7 @@
                 <div class="post-details">
                     <div class="post-user">
                         <span>Writed By
-                        <a th:href="@{/minlog/{username}(username=${post.user.username})}" th:text="${post.user.username}"></a>
+                        <a th:href="@{/minlog/profile/{username}(username=${post.user.username})}" th:text="${post.user.username}"></a>
                         </span>
                     </div>
                     <p class="post-date" th:text="${post.createdAt.format(dateformatter)}"></p>

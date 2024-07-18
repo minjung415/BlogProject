@@ -35,4 +35,4 @@
 -로그아웃
 
 7.특정 사용자 블로그 보기
--/minlog/@username으로 진입
+-/minlog/profile/@username으로 진입

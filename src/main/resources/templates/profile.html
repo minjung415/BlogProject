@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/" xmlns:sec="https://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${user.username}"></title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/profile.css}">
+</head>
+<body>
+<div class="container">
+    <header class="header">
+        <div class="header-content">
+            <h1 class="logo"><a th:href="@{/minlog}">Minlog</a></h1>
+        </div>
+    </header>
+    <div class="profile-container">
+        <div class="profile-header">
+            <div class="profile-info">
+                <h2 th:text="${user.username}">Username</h2>
+                <p>
+                    <span th:text="${user.name}">Name</span> | <span th:text="${user.email}"></span>
+                </p>
+            </div>
+        </div>
+        <div class="post-list-container">
+            <h2><a th:text="${user.username}"></a><span>'s Posts</span></h2>
+            <div class="post-list" th:if="${!user.posts.isEmpty()}">
+                <div th:each="post : ${user.posts}">
+                    <div class="post-item" th:if="${!post.isTemporary()}">
+                    <div class="post-title">
+                        <a th:href="@{/minlog/viewpost/{id}(id=${post.id})}" th:text="${post.title}"></a>
+                    </div>
+                    <div class="post-details">
+                        <div class="post-user">
+                        <span>Writed By
+                        <a th:href="@{/minlog/{username}(username=${post.user.username})}" th:text="${post.user.username}"></a>
+                        </span>
+                        </div>
+                        <p class="post-date" th:text="${post.createdAt.format(dateformatter)}"></p>
+                    </div>
+                    </div>
+                </div>
+            </div>
+            <div th:if="${user.posts.isEmpty()}">
+                <p>게시물이 없습니다.</p>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

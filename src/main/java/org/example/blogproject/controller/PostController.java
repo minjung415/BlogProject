@@ -68,4 +68,9 @@ public class PostController {
 //        redirectAttributes.addAttribute("id", id);
         return "redirect:/minlog/viewpost/" + id;
     }
+    @GetMapping("/mypage/{id}/delete")
+    public String deletepost(@PathVariable("id") Long id){
+        postService.deletePost(id);
+        return "redirect:/minlog/mypage";
+    }
 }
