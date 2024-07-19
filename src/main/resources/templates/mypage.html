@@ -33,11 +33,30 @@
                     <div class="post-details">
                         <div class="post-user">
                         <span>Writed By
-                        <a th:href="@{/minlog/{username}(username=${post.user.username})}" th:text="${post.user.username}"></a>
+                        <a th:href="@{/minlog/profile/{username}(username=${post.user.username})}" th:text="${post.user.username}"></a>
                         </span>
                         </div>
                         <p class="post-date" th:text="${post.createdAt.format(dateformatter)}"></p>
                     </div>
+                    </div>
+                </div>
+                <span class="post-temp">임시글</span>
+                <div th:each="post : ${user.posts}">
+                    <div class="post-item" th:if="${post.isTemporary()}">
+                        <div class="post-top">
+                            <a class="post-title" th:href="@{/minlog/viewpost/{id}(id=${post.id})}" th:text="${post.title}"></a>
+                            <a class="post-publish" th:href="@{/minlog/mypage/{id}/publish(id=${post.id})}">출간</a>
+                            <a class="post-delete" th:href="@{/minlog/mypage/{id}/delete(id=${post.id})}">삭제</a>
+
+                        </div>
+                        <div class="post-details">
+                            <div class="post-user">
+                        <span>Writed By
+                        <a th:href="@{/minlog/profile/{username}(username=${post.user.username})}" th:text="${post.user.username}"></a>
+                        </span>
+                            </div>
+                            <p class="post-date" th:text="${post.createdAt.format(dateformatter)}"></p>
+                        </div>
                     </div>
                 </div>
             </div>

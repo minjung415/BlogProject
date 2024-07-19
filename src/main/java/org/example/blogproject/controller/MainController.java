@@ -35,8 +35,10 @@ public class MainController {
     @GetMapping("/profile/{username}")
     public String page(@PathVariable("username") String username, Model model){
         User user = userService.getUser(username);
+        Set<Post> posts = postService.postList();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd hh:mm");
         model.addAttribute("user", user);
+        model.addAttribute("posts", posts);
         model.addAttribute("dateformatter", formatter);
         return "profile";
     }

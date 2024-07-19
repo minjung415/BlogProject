@@ -69,6 +69,12 @@ h2 span {
     margin-top: 0;
 }
 
+.post-temp {
+    font-size: 15px;
+    font-weight: bold;
+    margin-left: 15px;
+}
+
 .post-item {
     display: flex;
     flex-direction: column;
@@ -115,6 +121,12 @@ h2 span {
 
 .post-delete {
     color: tomato;
+    text-decoration: none;
+    font-size: 0.8rem;
+}
+
+.post-publish {
+    color: blue;
     text-decoration: none;
     font-size: 0.8rem;
 }

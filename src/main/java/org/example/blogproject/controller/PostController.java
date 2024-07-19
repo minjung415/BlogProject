@@ -73,4 +73,11 @@ public class PostController {
         postService.deletePost(id);
         return "redirect:/minlog/mypage";
     }
+    @GetMapping("/mypage/{id}/publish")
+    public String publishpost(@PathVariable("id") Long id){
+        Post post = postService.getPost(id);
+        post.setTemporary(false);
+        postService.savePost(post);
+        return "redirect:/minlog/mypage";
+    }
 }
