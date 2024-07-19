@@ -23,8 +23,8 @@
         </div>
         <div class="post-list-container">
             <h2><a th:text="${user.username}"></a><span>'s Posts</span></h2>
-            <div class="post-list" th:if="${!posts.isEmpty()}">
-                <div th:each="post : ${posts}">
+            <div class="post-list" th:if="${!user.posts.isEmpty()}">
+                <div th:each="post : ${user.posts}">
                     <div class="post-item" th:if="${!post.isTemporary()}">
                     <div class="post-top">
                         <a class="post-title" th:href="@{/minlog/viewpost/{id}(id=${post.id})}" th:text="${post.title}"></a>
@@ -40,7 +40,7 @@
                     </div>
                 </div>
             </div>
-            <div th:if="${posts.isEmpty()}">
+            <div th:if="${user.posts.isEmpty()}">
                 <p>게시물이 없습니다.</p>
             </div>
         </div>
